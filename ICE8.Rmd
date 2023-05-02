@@ -1,0 +1,259 @@
+---
+output: pdf_document
+geometry: margin=1.5cm
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ICE 8: T-intervals 
+Show your work and do not forget to interpret your confidence intervals for credit.
+
+Reminder: In-Class Exercises are graded as Complete or Incomplete. To receive a complete grade, you MUST ANSWER EVERY QUESTION to the best of your ability. For instance, if you do not answer ONE QUESTION, you will receive an incomplete on this assignment. The purpose of this grading scale is to ensure you are attempting every problem and working to learn the material.
+
+## Problem \#1:
+A random sample of 100 automobile owners in the state of Virginia shows that an automobile is driven on average 23,500 kilometers per year with a standard deviation of 3,900 kilometers. Assume the distribution of measurements to be approximately normal. Construct a 99\% confidence interval for the average number of kilometers an automobile is driven annually in Virginia. 
+
+A. What interval should you use and why?
+
+$~$ I would use a T interval as the standard deviation is unknown{5cm}
+We have one sample and know the sample standard deviation and the measurements are approximately normal distributed thus, t-interval
+
+
+B: Show your work to construct your interval.
+
+$~$
+```{r}
+#Interpreting Values
+x_bar <- 23500
+x_sd <- 3900
+n_x <- 100
+
+# Finding t-critical values
+
+df_value <- n_x - 1 
+alpha = 1 - 0.99
+t_critical <- qt(alpha/2, df = df_value, lower.tail = FALSE)
+
+
+
+#Calculate the Confidence Intervals 
+lower_bound <- x_bar - t_critical * x_sd/sqrt(n_x)
+upperbound <- x_bar + t_critical * x_sd/ sqrt(n_x)
+```
+
+
+
+C: Interpret your interval
+
+$~$ We are 99% confident that the population average number of kilometers an automobil is driven annually in Virginia is between (22475.7, 24524.3)
+
+## Problem \#2:
+SAT mathematics scores of a random sample of 500 high school seniors in the state of Texas are collected, and the sample mean and standard deviation are found to be 501 and 112, respectively. Find the 99\% confidence interval on the mean SAT math scores for the seniors in the state of Texas
+
+
+A: **Calculate and Interpret** the 99% confidence t-interval on the mean SAT math scores for the seniors in the state of Texas. Show your work.
+
+$~$ 
+```{r}
+#inputting Values
+x_bar <- 501
+x_sd <- 112
+n_x <- 500
+alpha = 1 - 0.99
+
+#finding t-critical values
+df_value <- n_x - 1
+t_critical <- qt(alpha/2, df = df_value, lower.tail = FALSE)
+
+#Calculating the Confidence Intervals 
+lower_bound <- x_bar - t_critical * x_sd/sqrt(n_x)
+upper_bound <- x_bar + t_critical * x_sd/sqrt(n_x)
+
+```
+
+
+B: **Calculate and Interpret** the 99% confidence Z-interval on the mean SAT math scores for the seniors in the state of Texas where we let 112 represent the population standard deviation rather than the sample. Show your work
+
+$~$ \vspace{8cm}
+
+```{r}
+#Finding t-critical values 
+z_critical <- qnorm(alpha/2, lower.tail = FALSE)
+
+#Calculating the Confidence Intervals 
+lower_bounds <- x_bar - z_critical*x_sd/sqrt(n_x)
+upper_bounds <- x_bar + z_critical*x_sd/sqrt(n_x)
+```
+
+
+C: What do you notice about these two interval? Can you explain why they may or may not be different?
+
+$~$ That they are really close to each other. This is beacuse as the degree of freedom in t- Distribution increases, the t-distribution converges to a normal distribution
+
+
+
+## Problem \#3:
+The following data represent the length of time, in days, to recovery for patients randomly treated with one of two medications to clear up severe bladder infections:
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|} 
+ \hline
+ Medication Type & Sample Size & Sample Mean ($\bar{x}$) & Sample Variance ($s^2$) \\ \hline 
+ 1 & 14 & 17 & 1.5\\ 
+ 2 & 16 & 19 & 1.8\\ 
+ \hline
+\end{tabular}
+\end{center}
+
+Find a 99% confidence interval for the difference in the mean recovery times for the two medications, assuming the normal populations. 
+
+
+A. What interval should you use and why?
+
+$~$ 2 Sample T- Interval pooled because their are 2 samples that are dependent 
+
+
+B: Show your work to construct your interval.
+
+$~$ 
+```{r}
+#Inputting values 
+#Med 1
+x1_bar <- 17 
+x1_sd <- 1.5
+n_x1 <- 14
+
+#Med 2
+x2_bar <- 19
+x2_sd <- 1.8 
+n_x2 <- 16
+
+#Pooled Standard Error
+sp_num <- (n_x1 - 1) * x1_sd + (n_x2 -1)*x2_sd
+sp_den <- n_x1 + n_x2 - 2
+sp <- sqrt(sp_num/sp_den);sp
+
+#Finding degree of Freedom
+df_value <- n_x1 + n_x2 - 2
+
+#Finding t-critical values 
+alpha = 1 - 0.99
+t_critical <- qt(alpha/2, df = df_value, lower.tail = FALSE)
+
+#Calculate the Confidence Intervals 
+lower_bound <- (x1_bar - x2_bar) - t_critical*sp*sqrt(1/n_x1 + 1/n_x2)
+upper_bound <- (x1_bar - x2_bar) + t_critical*sp*sqrt(1/n_x1 + 1/n_x2)
+
+```
+
+
+C: Interpret your interval
+
+$~$ We are 99% confident that the true difference in means for these medications is between -3.3031854 and -0.6968146
+
+## Problem \#4:
+A taxi company is trying to decide whether to purchase Brand A or Brand B tires for its fleet of taxis. To estimate the difference in the two brands, an experiment is conducted using 12 of each brand. The tires are run until they wear out. The results are:
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|} 
+ \hline
+ Brand Type & Sample Size & Sample Mean ($\bar{x}$) & Sample Standard Deviation ($s$) \\ \hline
+ A & 12 & 36,300 & 4,000\\ 
+ B & 12 & 38,100 & 8,200\\ 
+ Difference & 12 & -1,800 & 6,000 \\
+ \hline
+\end{tabular}
+\end{center}
+
+Compute the 95% confidence interval for difference in means for Brand A and Brand B, where we assume the populations are normally distributed.
+
+A. What interval should you use and why?
+
+$~$ unpooled t-interval because we have two indepdent populations with unknown variances.
+
+
+B: Show your work to construct your interval.
+
+$~$ 
+```{r}
+#Brand A 
+xa_bar <- 36300
+xa_sd <- 4000 
+n_xa <- 12
+
+#Brand B 
+xb_bar <- 38100
+xb_sd <- 8200
+n_xb <- 12
+
+#Finding degree of freedom 
+#Numerator 
+df_num <- (xa_sd^2/n_xa + xb_sd^2/n_xb )^2
+#Denominator 
+df_den <- (xa_sd^2/n_xa)^2/(n_xa - 1) + (xb_sd^2/n_xb )^2/(n_xb - 1)
+#Degree of Freedom 
+df_value <- df_num/df_den
+
+#Finding t-critical values
+alpha = 1 - 0.95
+t_critical <- qt(alpha/2, df = df_value, lower.tail = FALSE)
+
+# Calculate the Confidence Intervals
+lower_bound <- (xa_bar - xb_bar) - t_critical*sqrt(xa_sd^2/n_xa + xb_sd^2/n_xb)
+upper_bound <- (xa_bar - xb_bar) + t_critical*sqrt(xa_sd^2/n_xa + xb_sd^2/n_xb)
+
+```
+
+
+C: Interpret your interval
+
+$~$ Our 95% confident that the true differnece in means for two taxi bands is between (-7384.60752, 3784.60752250)
+
+## Problem \#5:
+A federal traffic study researcher was hired to ascertain the effect of wearing safety devices on reaction times to peripheral stimuli. To investigate this question, he randomly selected 15 subjects from the students enrolled in a driver education program. Each subject performed a simulated driving task that allowed reaction times to be recorded under two conditions, wearing a safety device (restricted conditions) and no safety devices (unrestricted conditions). Thus, each subject received two reaction time sources, one for restricted and one for unrestricted. Find a 95% confidence interval.
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|} 
+ \hline
+ Reaction Sources & Sample Size & Sample Mean ($\bar{x}$) & Sample Standard Deviation ($s$) \\ \hline
+ Unrestricted & 15 & 36.827 & 3.61\\ 
+ Restricted  & 15 & 38.007 & 3.57\\ 
+ Difference & 15 & 1.20 & 1.19 \\
+ \hline
+\end{tabular}
+\end{center}
+
+
+A. What interval should you use and why?
+
+$~$ Have 2 dependent populations thus, Paired confidence interval.
+
+
+B: Show your work to construct your interval.
+
+$~$ 
+```{r}
+#Typing out values 
+d_bar <- 1.20
+d_sd <- 1.19
+n_d <- 15
+
+#Finding t-critical values 
+df_value <- n_d -1 
+alpha = 1 - 0.95
+t_critical <- qt(alpha/2, df = df_value, lower.tail = FALSE)
+
+
+#Calculate the Confidence Intervals 
+lower_bound <- d_bar - t_critical*d_sd/sqrt(n_d)
+upper_bound <- d_bar + t_critical*d_sd/sqrt(n_d)
+
+
+```
+
+
+C: Interpret your interval
+
+$~$ We are 95% confident that the MEAN DIFFERENCE between the restricted and unrestricted is between 0.52 and 1.83
